@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Today's Weather Diary</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #a1c4fd, #c2e9fb);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      height: 100vh;
+    }
+
+    h1 {
+      margin-top: 20px;
+      color: #333;
+    }
+
+    .form-container {
+      display: flex;
+      flex-direction: column;
+      background-color: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      margin-top: 20px;
+      width: 300px;
+    }
+
+    .form-container label {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .form-container select,
+    .form-container input {
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #aaa;
+      border-radius: 6px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .form-container button {
+      margin-top: 15px;
+      padding: 10px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .entries-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 30px;
+      gap: 15px;
+    }
+
+    .entry {
+      background-color: #ffffffcc;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      min-width: 130px;
+    }
+
+    .entry span {
+      display: block;
+      margin: 5px 0;
+    }
+
+    .entry span:first-child {
+      font-weight: bold;
+      font-size: 1.1em;
+      color: #222;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Today's Weather Diary</h1>
+
+  <div class="form-container">
+    <label for="date">Date:</label>
+    <input type="date" id="date" required />
+
+    <label for="city">City Name:</label>
+    <input type="text" id="city" placeholder="Enter city name" required />
+
+    <label for="weather">Weather:</label>
+    <select id="weather">
+      <option value="☀️">☀️ Sunny</option>
+      <option value="🌧️">🌧️ Rainy</option>
+      <option value="☁️">☁️ Cloudy</option>
+    </select>
+
+    <label for="mood">Mood:</label>
+    <select id="mood">
+      <option value="😊">😊 Happy</option>
+      <option value="😐">😐 Okay</option>
+      <option value="😢">😢 Sad</option>
+    </select>
+
+    <button onclick="addEntry()">Save</button>
+  </div>
+
+  <div class="entries-container" id="entriesContainer"></div>
+
+  <script>
+    const entriesContainer = document.getElementById('entriesContainer');
+    let entries = [];
+
+    function addEntry() {
+      const date = document.getElementById('date').value;
+      const city = document.getElementById('city').value.trim();
+      const weather = document.getElementById('weather').value;
+      const mood = document.getElementById('mood').value;
+
+      if (!date) {
+        alert("Please select a date!");
+        return;
+      }
+
+      if (!city) {
+        alert("Please enter a city name!");
+        return;
+      }
+
+      if (entries.length >= 5) {
+        entries.shift(); // remove oldest
+      }
+
+      const entry = { date, city, weather, mood };
+      entries.push(entry);
+      renderEntries();
+    }
+
+    function renderEntries() {
+      entriesContainer.innerHTML = '';
+
+      entries.forEach(e => {
+        const div = document.createElement('div');
+        div.className = 'entry';
+        div.innerHTML = `
+          <span>🏙️ ${e.city}</span>
+          <span>📅 ${e.date}</span>
+          <span>${e.weather}</span>
+          <span>${e.mood}</span>
+        `;
+        entriesContainer.appendChild(div);
+      });
+    }
+  </script>
+
+</body>
+</html>
